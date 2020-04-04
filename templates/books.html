@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Books</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+
+</head>
+  <body class="books-body">
+
+    <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">Book Reviews Website</a>
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+            aria-expanded="false" aria-label="Toggle navigation"></button>
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+            <ul class="navbar-nav ml-auto  mt-lg-0 mr-4">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="">Search book</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/signup">Sign Up</a>
+                </li>
+                <!-----------------Login Or Logout Text----->
+                {% if login %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                {% elif logout%}
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+                {% endif %}
+               
+            </ul>
+           
+        </div>
+    </nav>
+    {% if login_successfull%}
+    <section class="container">
+      
+    <h1 class="display-3 text-center search-heading">Search Book Here</h1>
+    {%if search_value_empty%}
+    <div class="alert alert-warning alert-dismissible" style="width: 90%;margin-left: 3.5%;">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Error!</strong> {{search_value_empty}}
+      </div>
+      {%endif%}
+     
+        <form action="" method="POST" class="form-inline">
+            <div class="search-form">
+                
+                    <select class="form-control" name="options" id="">
+                      <option >By Author</option>
+                      <option >By ISBN</option>
+                      <option >By Book Name</option>
+                    </select>
+                  
+              <input type="text" name="search-value" id="" class="form-control search-textbox" placeholder="Search Books" aria-describedby="helpId">
+              <input type="submit" value="Search" class="btn btn-primary search-btn">
+            </div>
+        </form>
+</section>  
+{%if books %}
+<table class="container table table-collapse table-border table-striped table-dark" style="color: white;">
+    <thead>
+        <tr>
+            <th>Year Of Publication</th>
+            <th>Book Name</th>
+            <th>Author Name</th>
+            <th>ISBN Number</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books %}
+        <tr>
+            <td scope="row">{{book.year_of_publication}}</td>
+            <td>{{book.book_name}}</td>
+            <td>{{book.author}}</td>
+            <td><a href="/books/{{book.isbn_number}}">{{book.isbn_number}}</a></td>
+        </tr>
+       {% endfor %}
+    </tbody>
+</table>
+{%elif message%}
+{{ message }}</h1>
+{%endif%}
+
+{% else %}
+<section class="container-fluid">
+<h1 class="display-3 text-center login-heading">You need to login first to access books </h1>
+<p class="text-center login-para"><a href="/login">Click Here</a> to login or <a href="/signup">Sign Up</a> to create a new account</p>
+</section>
+{% endif %}
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

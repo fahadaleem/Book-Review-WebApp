@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+</head>
+  <body class="book-detail-body">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">Book Reviews Website</a>
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+            aria-expanded="false" aria-label="Toggle navigation"></button>
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+            <ul class="navbar-nav ml-auto  mt-lg-0 mr-4">
+                <li class="nav-item ">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/books">Search book</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/signup">Sign Up</a>
+                </li>
+                <!-----------------Login Or Logout Text----->
+                {% if login %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                {% elif logout%}
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+                {% endif %}
+               
+            </ul>
+           
+        </div>
+    </nav>
+
+
+    <div class="jumbotron">
+        <div class="container title-container" >
+        <h1 class="lead text-center">{{book.book_name}}</h1>
+        <p class="author-name">By {{book.author}}</p>
+    </div>
+    </div>
+    <h1 class=" text-center" style="font-size: 3rem;">Book Description</h1>
+    <hr style="width: 20%; background-color: black; padding: 1px;">
+    <section class="book-description">
+        
+        <div class="container">
+       <div class="row book-description-row">
+        <div class="col-lg-6 text-center">
+            <img src="{{ url_for('static', filename='book.svg')}}"  alt="" height="300px" width="300px">
+        </div>
+        <div class="col-lg-6">
+            <h2 class="book-details-text">Book Name: <span>{{book.book_name}}</span></h2>
+            <h2 class="book-details-text">Author:  <span>{{book.author}}</span></h2>
+            <h2 class="book-details-text">ISBN:  <span>{{book.isbn_number}}</span></h2>
+            <h2 class="book-details-text">Year:  <span>{{book.year_of_publication}}</span></h2>
+            <h2 class="book-details-text">Average Rating: <span>{{average_rating}}</span></h2>
+            <h2 class="book-details-text">Reviews Count: <span>{{ work_text_reviews_count }}</span></h2>
+        </div>
+        </div>
+       </div>
+    </section>
+
+
+    <!--------Reviews ------------>
+    {% if reviews %}
+    <h1 class=" text-center" style="font-size: 3rem;padding-top: 45px;">Comments</h1>
+    <hr style="width: 10%; background-color: black; padding: 1px;">
+    {% endif %}
+    {% for review in reviews %}
+    
+    <section class="comments container pt-4">
+        <div class="comment-box border-top pt-4">
+            <div>
+            <label for="user name" class="name-label">{{review.user_email}}</label>
+            <label for="" class="float-right rate-label">Rated : {{review.rating}}</label>
+                <br>
+                <br>
+        </div>
+            <div class="alert alert-primary" role="alert">
+                {{review.comment}}
+            </div>
+        </div>
+       
+
+    </section>
+{% endfor %}
+
+
+    <form action="/books/{{book.isbn_number}}" class="container pt-4" method="POST">
+        <h1 class="text-center">Your Comment About This Book</h1>
+    <hr style="width: 30%; background-color: black; padding: 1px;">
+    {% if checkdata %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span>
+            </button>
+            <strong>Error!</strong> You already Submitted a comment
+        </div>
+        {% endif %}
+        <div class="form-group" >
+          <label for="">Rating</label>
+          <select class="form-control" name="rating" id="">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for=""></label>
+          <textarea class="form-control" name="comment" id="" rows="3" placeholder="Message"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg" style="float: right;" >Submit</button>
+    </form>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+
+
+</html>
